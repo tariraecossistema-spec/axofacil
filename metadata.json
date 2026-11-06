@@ -1,0 +1,6 @@
+{
+  "name": "Axofácil!",
+  "description": "Directório comercial e marketplace de Moçambique — Lojas, Peças Auto, Supermercados, Material de Construção, Bares, Hospedagens, Turismo e Entregadores.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

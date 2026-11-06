@@ -1,0 +1,358 @@
+@import "leaflet/dist/leaflet.css";
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Consolas, monospace;
+  
+  --color-ink: #0F172A;
+  --color-ink-muted: #475569;
+  --color-ink-faint: #64748B;
+  --color-indigo-brand: #0B254B;
+  --color-indigo-deep: #061833;
+  --color-terracotta: #0B254B;
+  --color-terracotta-dark: #061833;
+  --color-ochre: #123363;
+  --color-coral-brand: #103B75;
+  --color-sand: #FFFFFF;
+  --color-sand-2: #F8FAFC;
+  --color-sand-3: #E2E8F0;
+  --color-paper: #FFFFFF;
+  --color-paper-card: #FFFFFF;
+}
+
+/* Typography Base Improvements — Padrão Moderno SaaS Brasil/Canadá (Inter & Plus Jakarta Sans) */
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+  letter-spacing: -0.012em;
+}
+
+h1, h2, h3, h4, h5, h6, .font-serif, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.024em;
+}
+
+.font-mono {
+  font-feature-settings: "tnum" on, "lnum" on, "zero" on;
+}
+
+/* Ensure Leaflet containers render reliably with smooth layer display */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  font-family: inherit;
+}
+
+.custom-map-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* ========================================================================= */
+/* COMMERCIAL EDITORIAL STYLES & CLEAN LAYOUTS                              */
+/* ========================================================================= */
+
+/* Custom CSS Styles for smooth animations */
+.capulana-strip {
+  display: none !important;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: scroll 22s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Authentic Commercial Stamp Seal */
+.stamp {
+  width: 140px;
+  height: 140px;
+  border: 3px dashed #0B254B;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-7deg);
+  position: relative;
+  transition: transform 0.3s ease;
+  box-shadow: inset 0 0 0 2px #0B254B;
+}
+
+.stamp:hover {
+  transform: rotate(-11deg) scale(1.04);
+}
+
+/* Ledger & Commercial Editorial Table Borders */
+.ledger-table-header {
+  border-bottom: 3px double #0B254B;
+}
+
+.ledger-row-zebra:nth-child(even) {
+  background-color: #F8FAFC;
+}
+
+.retail-price-tag {
+  position: relative;
+  background: #FFFFFF;
+  border: 1.5px dashed #0B254B;
+}
+
+.retail-price-tag::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0B254B;
+  box-shadow: 0 0 0 2px #FFFFFF;
+}
+
+/* Perforated ticket cutout */
+.ticket-edge-left {
+  position: relative;
+}
+.ticket-edge-left::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background: var(--color-paper);
+  border-radius: 50%;
+  border-right: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F8FAFC;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0B254B;
+}
+
+/* ========================================================================= */
+/* LINHA RETA CONTÍNUA ANIMADA 'VAI E VOLTA' (Sem distorção de luz / Reta)   */
+/* ========================================================================= */
+@keyframes straightLinePingPong {
+  0% {
+    stroke-dashoffset: 100;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  25% {
+    stroke-dashoffset: 0;
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    transform: scaleX(1);
+    transform-origin: right center;
+  }
+  75% {
+    stroke-dashoffset: 100;
+    transform: scaleX(0);
+    transform-origin: right center;
+  }
+  100% {
+    stroke-dashoffset: 100;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+}
+
+/* Linha reta limpa e contínua que corre da esquerda para a direita, depois da direita para a esquerda, de forma intermitente */
+@keyframes straightLineLeftToRightAndBackIntermittent {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  38% {
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  88% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 100;
+  }
+}
+
+.straight-line-sweep,
+.straight-underline-tracer {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: straightLineLeftToRightAndBackIntermittent 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Linha animada CSS ping-pong para destaques de preços */
+.price-pingpong-line {
+  position: relative;
+  display: inline-block;
+}
+
+.price-pingpong-line::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #103B75;
+  border-radius: 2px;
+  animation: pingPongLineBar 2.8s ease-in-out infinite;
+}
+
+@keyframes pingPongLineBar {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  38% {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: right center;
+  }
+  88% {
+    transform: scaleX(0);
+    transform-origin: right center;
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+}
+
+/* ========================================================================= */
+/* ANIMAÇÕES AMBIENTES DE QUADROS, IMAGENS & DESTAQUES (Mesmo sem hover)    */
+/* ========================================================================= */
+
+/* Efeito de brilho suave e contínuo passando pelos quadros de produtos/lojas */
+@keyframes ambientSheenPass {
+  0% {
+    transform: translateX(-160%) rotate(25deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.45;
+  }
+  35% {
+    transform: translateX(220%) rotate(25deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(220%) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+.ambient-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.ambient-sheen::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 80%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 20%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.03) 80%,
+    transparent 100%
+  );
+  transform: translateX(-160%) rotate(25deg);
+  animation: ambientSheenPass 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Micro-pulsação de vida nas molduras e badges */
+@keyframes ambientBreatheSlow {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025);
+  }
+}
+
+.ambient-image-breathe {
+  animation: ambientBreatheSlow 12s ease-in-out infinite;
+}
+
+@keyframes subtleFloatBadge {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.ambient-badge-float {
+  animation: subtleFloatBadge 4s ease-in-out infinite;
+}
+
+/* Borda com iluminação sutil ambiente */
+@keyframes ambientBorderGlow {
+  0%, 100% {
+    border-color: rgba(11, 37, 75, 0.20);
+    box-shadow: 0 1px 3px rgba(11, 37, 75, 0.04);
+  }
+  50% {
+    border-color: rgba(11, 37, 75, 0.45);
+    box-shadow: 0 4px 14px rgba(11, 37, 75, 0.12);
+  }
+}
+
+.ambient-card-glow {
+  animation: ambientBorderGlow 5s ease-in-out infinite;
+}
+
+
